@@ -67,7 +67,7 @@ if st.button("Predict"):
     # Output box
     if prediction == 1:
         st.markdown(f"""
-        <div class='result-box' style='border-left-color: #f8d7da; background-color:#fddede; padding:10px; border-radius:8px;'>
+        <div class='result-box'style='border-left-color: #b8f2e6; background-color:#d8f3dc;'>
             <h4 style='color:red;'>⚠️ High Risk of Heart Disease</h4>
             <p style='color:red;'>Probability: {prob*100:.2f}%</p>
             <p style='color:red;'>Please consult a cardiologist immediately.</p>
@@ -75,7 +75,7 @@ if st.button("Predict"):
         """, unsafe_allow_html=True)
     else:
         st.markdown(f"""
-        <div class='result-box' style='border-left-color: #b8f2e6; background-color:#d8f3dc; padding:10px; border-radius:8px;'>
+        <div class='result-box' style='border-left-color: #b8f2e6; background-color:#d8f3dc;'>
             <h4 style='color:#2a9d8f;'>✅ Low Risk of Heart Disease</h4>
             <p>Probability: {prob*100:.2f}%</p>
             <p>Keep maintaining a healthy lifestyle.</p>
@@ -83,30 +83,29 @@ if st.button("Predict"):
         """, unsafe_allow_html=True)
 
         # Show bar graph after low-risk message
-        features = ["Age", "Resting BP", "Cholesterol", "Max HR", "ST Depression"]
-        values = [age, trestbps, chol, thalach, oldpeak]
-        thresholds = {"Age": 60, "Resting BP": 130, "Cholesterol": 240, "Max HR": 100, "ST Depression": 2.0}
+features = ["Age", "Resting BP", "Cholesterol", "Max HR", "ST Depression"]
+values = [age, trestbps, chol, thalach, oldpeak]
+thresholds = {"Age": 60, "Resting BP": 130, "Cholesterol": 240, "Max HR": 100, "ST Depression": 2.0}
 
-        colors = []
-        for i, val in enumerate(values):
-            feat = features[i]
-            if (feat == "Max HR" and val < thresholds[feat]) or (feat != "Max HR" and val > thresholds[feat]):
-                colors.append("red")
-            else:
-                colors.append("green")
+colors = []
+for i, val in enumerate(values):
+    feat = features[i]
+    if (feat == "Max HR" and val < thresholds[feat]) or (feat != "Max HR" and val > thresholds[feat]):
+        colors.append("red")
+    else:
+        colors.append("green")
 
-        # Compact bar chart
-        fig, ax = plt.subplots(figsize=(6, 3))
-        bars = ax.bar(features, values, color=colors)
+# Compact bar chart
+fig, ax = plt.subplots(figsize=(6, 3))
+bars = ax.bar(features, values, color=colors)
 
-        ax.set_title("Your Key Health Metrics", fontsize=12)
-        ax.set_ylim(0, max(values) * 1.2)
+ax.set_title("Your Key Health Metrics", fontsize=12)
+ax.set_ylim(0, max(values) * 1.2)
 
-        for bar in bars:
-            height = bar.get_height()
-            ax.annotate(f"{height:.1f}",
-                        xy=(bar.get_x() + bar.get_width() / 2, height - 10),
-                        ha="center", va="bottom", color="white" if height > 50 else "black")
+for bar in bars:
+    height = bar.get_height()
+    ax.annotate(f"{height:.1f}",
+                xy=(bar.get_x() + bar.get_width() / 2, height - 10),
+                ha="center", va="bottom", color="black" if height > 30 else "black")
 
-        st.pyplot(fig)
-
+st.pyplot(fig)
