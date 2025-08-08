@@ -66,10 +66,7 @@ if st.button("Predict"):
     prediction = 1 if prob > 0.5 else 0
 
     # Debug output
-    st.sidebar.markdown("### 🔍 Debug Info")
-    st.sidebar.write("Input:", input_data)
-    st.sidebar.write("Probability (class 1):", f"{prob*100:.2f}%")
-    st.sidebar.write("Prediction (0=Low, 1=High):", prediction)
+   
 
     # Output
     if prediction == 1:
